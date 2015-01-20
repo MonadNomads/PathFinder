@@ -17,4 +17,5 @@ cabal-version:       >=1.8
 executable path_finder
   main-is:           Main.hs
   -- other-modules:
-  build-depends:     base
+  build-depends:     base,
+                     containers
