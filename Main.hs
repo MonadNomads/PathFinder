@@ -29,8 +29,8 @@ path g from to = path' g from to (singleton to (0, Nothing))
 
 path' g f t m
   | f `member` m = Just $ build_path m f
-  | otherwise    = path' g f t (L.foldr (\n -> extend g n) m (keys m))
-                   -- will recurse indefinitely if there is no path
+  | otherwise    = let m' = L.foldr (\n -> extend g n) m (keys m) in
+                    if m' == m then Nothing else path' g f t m'
 
 build_path :: Ord a => Map a (Int, Maybe a) -> a -> [a]
 build_path m n = let (_, mp) = m ! n in
