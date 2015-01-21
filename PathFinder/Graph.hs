@@ -16,3 +16,6 @@ instance Show a => Show (Edge a) where
 
 node :: Graph a -> a -> Maybe (Node a)
 node g x = find (\(Node y) -> y == x) (nodes g)
+
+parents :: Graph a -> a -> [a]
+parents g n = [f | Edge f t <- (edges g), t == n]
