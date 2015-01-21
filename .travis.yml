@@ -1,1 +1,6 @@
 language: haskell
+before_install:
+  - cabal install hlint
+
+script:
+  - hlint PathFinder/*.hs
