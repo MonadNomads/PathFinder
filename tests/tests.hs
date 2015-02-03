@@ -17,8 +17,8 @@ instance Arbitrary a => Arbitrary (ConnectedGraph a) where
 
 addToCG :: a -> ConnectedGraph a -> Gen (ConnectedGraph a)
 addToCG newLabel connectedGraph
-  | null (nodes $ cg connectedGraph) = return singleton
-  | otherwise                        = fmap buildGraph oldLabelGen
+  | null (nodes graph) = return singleton
+  | otherwise          = fmap buildGraph oldLabelGen
   where graph        = cg connectedGraph                               -- Graph a
         singleton    = CG $ Graph [Node newLabel] []                   -- ConnectedGraph a
         oldLabelGen  = G.label <$> elements (nodes graph)              -- Gen a
