@@ -12,6 +12,9 @@ instance Show a => Show (Node a) where
 instance Show a => Show (Edge a) where
   show (Edge x y) = show x ++ " -> " ++ show y
 
+empty :: Graph a
+empty = Graph [] []
+
 node :: Eq a => Graph a -> a -> Maybe (Node a)
 node g x = find (\(Node y) -> y == x) (nodes g)
 
