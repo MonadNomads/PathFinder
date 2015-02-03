@@ -19,3 +19,10 @@ executable path_finder
   -- other-modules:
   build-depends:     base,
                      containers
+
+Test-Suite test
+    type:            exitcode-stdio-1.0
+    main-is:         tests/tests.hs
+    build-depends:   base,
+                     containers,
+                     QuickCheck
