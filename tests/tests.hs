@@ -18,11 +18,12 @@ instance (Arbitrary a, Eq a) => Arbitrary (Graph a) where
   arbitrary = do
     nodes <- nub <$> listOf1 arbitrary
     esize <- arbitrary `suchThat` (< 2 * length nodes)
-    edges <- (nub . concat) <$> (vectorOf esize
-                                 (do f <- elements nodes
-                                     t <- elements nodes `suchThat` (/= f)
-                                     return [(f, t), (t, f)]))
-    return $ Graph (map Node nodes) (map (uncurry Edge) edges)
+    edges <- concat <$> (vectorOf esize
+                         (do f <- elements nodes
+                             t <- elements nodes `suchThat` (/= f)
+                             Positive w <- arbitrary `suchThat` (< 100)
+                             return [Edge f t w, Edge t f w]))
+    return $ Graph (map Node nodes) edges
 
 
 

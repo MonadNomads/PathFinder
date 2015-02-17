@@ -31,7 +31,7 @@ emptyMap s = singleton s (0, Nothing)
 extendMap :: Ord a => Graph a -> a -> VisitedNodes a -> VisitedNodes a
 extendMap g n m =
   let (l, _) = m ! n
-      ps = parents g n
+      ps = nub $ parents g n
       ns = ps \\ keys m in
   foldr (\p -> insert p (l + 1, Just n)) m ns
 
