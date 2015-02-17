@@ -18,11 +18,11 @@ instance (Arbitrary a, Eq a) => Arbitrary (Graph a) where
   arbitrary = do
     nodes <- nub <$> listOf1 arbitrary
     esize <- arbitrary `suchThat` (< 2 * length nodes)
-    edges <- concat <$> (vectorOf esize
+    edges <- concat <$> vectorOf esize
                          (do f <- elements nodes
                              t <- elements nodes `suchThat` (/= f)
                              Positive w <- arbitrary `suchThat` (< 100)
-                             return [Edge f t w, Edge t f w]))
+                             return [Edge f t w, Edge t f w])
     return $ Graph (map Node nodes) edges
 
 
@@ -38,7 +38,7 @@ prop_connectedPaths g = isConnected g == all isJust [path g x y | (Node x) <- no
 prop_triangularInequality :: Ord a => Graph a -> Property
 prop_triangularInequality g = length (nodes g) >= 3
                             && isJust pab
-                            && isJust pbc ==> maybe False id $ do
+                            && isJust pbc ==> fromMaybe False $ do
                               lac <- length <$> pac
                               lab <- length <$> pab
                               lbc <- length <$> pbc
