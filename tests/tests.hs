@@ -21,9 +21,10 @@ instance (Arbitrary a, Eq a) => Arbitrary (Graph a) where
     edges <- concat <$> vectorOf esize
                          (do f <- elements nodes
                              t <- elements nodes `suchThat` (/= f)
-                             Positive w <- arbitrary `suchThat` (< 100)
+                             w <- arbitrary `suchThat` neitherTooBigNorTooSmall
                              return [Edge f t w, Edge t f w])
     return $ Graph (map Node nodes) edges
+    where neitherTooBigNorTooSmall x = x > 0 && x < 100
 
 
 
