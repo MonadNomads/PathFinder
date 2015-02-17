@@ -34,6 +34,18 @@ prop_nodesWorks ls l = (l `elem` ls) == isJust (node g l)
 prop_connectedPaths :: Ord a => Graph a -> Bool
 prop_connectedPaths g = isConnected g == all isJust [path g x y | (Node x) <- nodes g, (Node y) <- nodes g]
 
+prop_triangularInequality :: Ord a => Graph a -> Property
+prop_triangularInequality g = length (nodes g) >= 3
+                            && isJust pab
+                            && isJust pbc ==> maybe False id $ do
+                              lac <- length <$> pac
+                              lab <- length <$> pab
+                              lbc <- length <$> pbc
+                              return $ lac <= lab + lbc
+  where a:b:c:_ = take 3 (nodes g)
+        pab = path g (G.label a) (G.label b)
+        pbc = path g (G.label b) (G.label c)
+        pac = path g (G.label a) (G.label c)
 
 
 main = do
